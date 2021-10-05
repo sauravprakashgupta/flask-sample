@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+from flask.wrappers import Request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -19,25 +20,30 @@ class Todo(db.Model):
         return f"{self.sno} - {self.title}"
 
 
-@app.route('/')
-def hello_world():
-    todo = Todo(title="This is title", desc="This is description")
-    db.session.add(todo)
+@app.route('/', methods=['POST','GET'] )
+def home():
+    if request.method == 'POST':
+        todo = Todo(title=request.form['title'], 
+                    desc=request.form['desc']
+                    )
+        db.session.add(todo)
+        db.session.commit()
+    all_todo = Todo.query.all()
+    return render_template('index.html', all_todo=all_todo)
+
+
+@app.route('/delete/<int:sno>')
+def delete(sno):
+    del_obj=Todo.query.filter_by(sno=sno).first()
+    db.session.delete(del_obj)
     db.session.commit()
-    return render_template('index.html')
+    return redirect("/")
 
-
-@app.route('/add')
-def show():
-    return '<h1>This is under construction</h1>'
-
-@app.route('/update')
-def add():
-    return '<h1>This is under construction</h1>'
-
-@app.route('/delete')
-def update():
-    return '<h1>This is under construction</h1>'
+@app.route('/edit/<int:sno>')
+def edit(sno):
+    edit_obj=Todo.query.filter_by(sno=sno).first()
+    
+    db.session.commit()
 
 
 if __name__ == '__main__':
