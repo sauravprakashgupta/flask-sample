@@ -1,0 +1,24 @@
+1. make account in heroku: https://dashboard.heroku.com/apps
+    I used a temp mail to create an account
+        email: cisil27461@mustale.com
+        password: Q!***********1
+
+2. download and install the Heroku CLI, make sure its added in PATH variables
+
+3. You must have git on your system
+    a. add, commit your code, locally
+
+4. login to heroku from CLI using the bwlow command
+    > heroku login
+
+5. Create your app in heroku from the CLI
+    > heroku create todo-sauravprakashgupta
+
+6. Check your remote git links, you are supposed to have 'heroku' as one of the remote git repo
+    > git remote -v
+
+7. push your code to heroku
+    >git push heroku master
+
+8. check the running logs, you will get your web endpoint for the hosted application
+    example: https://todo-sauravprakashgupta.herokuapp.com/
