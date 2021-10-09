@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container my-4">
+    <h2>Delete your todo</h2>
+    <form action="/edit/sno" method="POST">
+        <div class="form-group">
+            <label for="title">Title: </label>
+            <input type="text" class="form-control" id="title" name="title" value={{todo.title}} aria-describedby="emailHelp">
+            
+        </div>
+        <div class="form-group">
+            <label for="desc">Description: </label>
+            <input type="text" class="form-control" name="desc" value={{todo.desc}} id="desc">
+        </div>
+
+        <a href="/delete/{{todo.sno}}" type="button" class="btn btn-danger btn-sm mx-1">Delete</button>
+        <a href="/" type="button" class="btn btn-success btn-sm mx-1">Back</button>
+    </form>
+</div>
+
+
+{% endblock body %}

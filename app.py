@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from flask.wrappers import Request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+# from playsound import playsound
 
 app = Flask(__name__)
 
@@ -32,18 +33,35 @@ def home():
     return render_template('index.html', all_todo=all_todo)
 
 
-@app.route('/delete/<int:sno>')
+@app.route('/delete/<int:sno>', methods=['POST','GET'])
 def delete(sno):
-    del_obj=Todo.query.filter_by(sno=sno).first()
-    db.session.delete(del_obj)
-    db.session.commit()
-    return redirect("/")
-
-@app.route('/edit/<int:sno>')
-def edit(sno):
-    edit_obj=Todo.query.filter_by(sno=sno).first()
+    if request.method == 'POST':
+        sno_del = request.form['title']
+        todo=Todo.query.filter_by(sno=sno_del).first()
+        db.session.delete(todo)
+        db.session.commit()
+        # playsound('delete-sound.mp3')
+        return redirect("/")       
+    todo=Todo.query.filter_by(sno=sno).first()
+    return render_template('delete.html', todo=todo)
     
-    db.session.commit()
+
+@app.route('/edit/<int:sno>', methods=['POST','GET'])
+def edit(sno):
+    if request.method == 'POST':
+        title = request.form['title']
+        desc = request.form['desc']
+        todo = Todo(title=title, 
+                    desc=desc
+                    )
+        db.session.add(todo)
+        db.session.commit()
+        return redirect("/")
+
+    todo=Todo.query.filter_by(sno=sno).first()
+    return render_template('update.html', todo=todo)
+    
+    # db.session.commit()
 
 
 if __name__ == '__main__':
