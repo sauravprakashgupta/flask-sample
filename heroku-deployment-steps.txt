@@ -1,3 +1,4 @@
+Pre-requisite: Make sure you have created the 'Procfile'
 1. make account in heroku: https://dashboard.heroku.com/apps
     I used a temp mail to create an account
         email: cisil27461@mustale.com
